@@ -13,13 +13,13 @@ CREATE TABLE Data_Kurir (
 
 CREATE TABLE Jenis_Servis (
     ID_Servis       CHAR(3) NOT NULL PRIMARY KEY,
-    ETA             VARCHAR(16) NOT NULL,
+    Nama_Servis     VARCHAR(16) NOT NULL,
+    ETA             INT NOT NULL,
     Tarif_per_jarak INT NOT NULL
 );
 
 CREATE TABLE Kode_Pos (
     ID_Pos          CHAR(5) NOT NULL PRIMARY KEY,
-    Desa            VARCHAR(64) NOT NULL,
     Kelurahan       VARCHAR(64) NOT NULL,
     Kecamatan       VARCHAR(64) NOT NULL,
     Kota            VARCHAR(64) NOT NULL,
@@ -27,9 +27,14 @@ CREATE TABLE Kode_Pos (
 );
 
 CREATE TABLE Kategori_Barang (
-    ID_Kategori         CHAR(3) NOT NULL PRIMARY KEY,
+    ID_Kategori         CHAR(5) NOT NULL PRIMARY KEY,
     Nama_Kategori       VARCHAR(16) NOT NULL,
     Tarif_per_berat     INT NOT NULL
+);
+
+CREATE TABLE Status_Kirim (
+    ID_Status CHAR(3) NOT NULL PRIMARY KEY,
+    deskripsi VARCHAR(16) NOT NULL
 );
 
 CREATE TABLE Resi (
@@ -42,9 +47,8 @@ CREATE TABLE Resi (
     ID_Pos_Sender       CHAR(5) NOT NULL,
     ID_User_Receiver    CHAR(5) NOT NULL,
     ID_Pos_Receiver     CHAR(5) NOT NULL,
-    Resi_Status         VARCHAR(16),
     Tgl_Kirim           DATE NOT NULL,
-    Tgl_Sampai          DATE NOT NULL,
+    Tgl_Sampai          DATE,
     CONSTRAINT ID_Servis FOREIGN KEY (ID_Servis) REFERENCES Jenis_Servis(ID_Servis),
     CONSTRAINT ID_Kategori FOREIGN KEY (ID_Kategori) REFERENCES Kategori_Barang(ID_Kategori),
     CONSTRAINT ID_User_Sender FOREIGN KEY (ID_User_Sender) REFERENCES Data_Pengguna(ID_User),
@@ -56,6 +60,33 @@ CREATE TABLE Resi (
 CREATE TABLE Pengiriman (
     ID_Resi             CHAR(16) NOT NULL,
     ID_Kurir            CHAR(5) NOT NULL,
+    Status_Resi         CHAR(3) NOT NULL,
+    CONSTRAINT Status_Resi FOREIGN KEY (Status_Resi) REFERENCES Status_Kirim(ID_Status),
     CONSTRAINT ID_Resi FOREIGN KEY (ID_Resi) REFERENCES Resi(ID_Resi),
     CONSTRAINT ID_Kurir FOREIGN KEY (ID_Kurir) REFERENCES Data_Kurir(ID_Kurir)
 );
+
+--  data pengguna
+INSERT INTO data_pengguna VALUES ('AA001', 'Rafi Nizar', '081218593545', 'Bumi Marina Emas Barat IV');
+INSERT INTO data_pengguna VALUES ('AA002', 'Afiq Fawwaz', '0811124774', 'Rahayu Residence');
+
+-- data kurir 
+INSERT INTO data_kurir VALUES ('0X001', 'Satrio', '08125738863');
+
+-- jenis servis
+INSERT INTO jenis_servis VALUES ('S01','YES', '2', '25000');
+INSERT INTO jenis_servis VALUES ('S02','REG', '4', '15000');
+INSERT INTO jenis_servis VALUES ('S03','OKE', '8', '10000');
+
+-- kode pos
+INSERT INTO kode_pos VALUES ('60117', 'Gebang Putih', 'Sukolilo', 'Surabaya', 'Jawa Timur');
+INSERT INTO kode_pos VALUES ('42113', 'Lopang', 'Serang', 'Serang', 'Banten');
+
+-- kategori barang
+INSERT INTO Kategori_Barang VALUES ('DOC01', 'Dokumen', '500');
+
+-- status pengiriman
+INSERT INTO Status_Kirim VALUES ('NO1', 'Barang belum dikirim');
+INSERT INTO Status_Kirim VALUES ('NO2', 'Barang berada di Warehouse');
+INSERT INTO Status_Kirim VALUES ('OW1', 'Barang dalam perjalanan');
+INSERT INTO Status_Kirim VALUES ('OW2', 'Barang sudah sampai tujuan');
