@@ -1,5 +1,5 @@
 CREATE TABLE Pengguna (
-    ID_User         CHAR(5) NOT NULL PRIMARY KEY,
+    ID_User         CHAR(7) NOT NULL PRIMARY KEY,
     Nama_User       VARCHAR(32) NOT NULL,
     Hp_User         VARCHAR(12) NOT NULL,
     Alamat          VARCHAR(128) NOT NULL
@@ -11,10 +11,11 @@ CREATE TABLE Tipe_Akun (
 );
 
 CREATE TABLE Pegawai (
-    ID_Pegawai            CHAR(5) NOT NULL PRIMARY KEY,
+    ID_Pegawai            CHAR(6) NOT NULL PRIMARY KEY,
     Nama_Pegawai          VARCHAR(32) NOT NULL,
     Hp_Pegawai            VARCHAR(12) NOT NULL,
-    Login_Username        VARCHAR(12) NOT NULL,
+    Alamat_Pegawai        VARCHAR(128),
+    Login_Username        VARCHAR(12)  NOT NULL,
     Login_Password        VARCHAR(10) NOT NULL,
     Account_lvl           CHAR(1) NOT NULL,
     CONSTRAINT Account_lvl FOREIGN KEY (Account_lvl) REFERENCES Tipe_Akun(ID_Security)
