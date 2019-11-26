@@ -1,20 +1,28 @@
-CREATE TABLE Data_Pengguna (
+CREATE TABLE Pengguna (
     ID_User         CHAR(5) NOT NULL PRIMARY KEY,
     Nama_User       VARCHAR(32) NOT NULL,
     Hp_User         VARCHAR(12) NOT NULL,
     Alamat          VARCHAR(128) NOT NULL
 );
 
-CREATE TABLE Data_Kurir (
-    ID_Kurir            CHAR(5) NOT NULL PRIMARY KEY,
-    Nama_Kurir          VARCHAR(32) NOT NULL,
-    Hp_Kurir            VARCHAR(12) NOT NULL
+CREATE TABLE Tipe_Akun (
+    ID_Security         CHAR(1) NOT NULL PRIMARY KEY,
+    Security_Lvl        VARCHAR(8) NOT NULL
+);
+
+CREATE TABLE Pegawai (
+    ID_Pegawai            CHAR(5) NOT NULL PRIMARY KEY,
+    Nama_Pegawai          VARCHAR(32) NOT NULL,
+    Hp_Pegawai            VARCHAR(12) NOT NULL,
+    Login_Username        VARCHAR(12) NOT NULL,
+    Login_Password        VARCHAR(10) NOT NULL,
+    Account_lvl           CHAR(1) NOT NULL,
+    CONSTRAINT Account_lvl FOREIGN KEY (Account_lvl) REFERENCES Tipe_Akun(ID_Security)
 );
 
 CREATE TABLE Jenis_Servis (
     ID_Servis       CHAR(3) NOT NULL PRIMARY KEY,
     Nama_Servis     VARCHAR(16) NOT NULL,
-    ETA             INT NOT NULL,
     Tarif_per_jarak INT NOT NULL
 );
 
@@ -63,9 +71,9 @@ CREATE TABLE Resi (
     Total_Tarif         INT,
     CONSTRAINT ID_Servis FOREIGN KEY (ID_Servis) REFERENCES Jenis_Servis(ID_Servis),
     CONSTRAINT ID_Kategori FOREIGN KEY (ID_Kategori) REFERENCES Kategori_Barang(ID_Kategori),
-    CONSTRAINT ID_User_Sender FOREIGN KEY (ID_User_Sender) REFERENCES Data_Pengguna(ID_User),
+    CONSTRAINT ID_User_Sender FOREIGN KEY (ID_User_Sender) REFERENCES Pengguna(ID_User),
     CONSTRAINT ID_Pos_Sender FOREIGN KEY (ID_Pos_Sender) REFERENCES Kode_Pos(ID_Pos),
-    CONSTRAINT ID_User_Receiver FOREIGN KEY (ID_User_Receiver) REFERENCES Data_Pengguna(ID_User),
+    CONSTRAINT ID_User_Receiver FOREIGN KEY (ID_User_Receiver) REFERENCES Pengguna(ID_User),
     CONSTRAINT ID_Pos_Receiver FOREIGN KEY (ID_Pos_Receiver) REFERENCES Kode_Pos(ID_Pos)
 );
 
@@ -75,7 +83,7 @@ CREATE TABLE Pengiriman (
     Status_Resi         CHAR(3) NOT NULL,
     CONSTRAINT Status_Resi FOREIGN KEY (Status_Resi) REFERENCES Status_Kirim(ID_Status),
     CONSTRAINT ID_Resi FOREIGN KEY (ID_Resi) REFERENCES Resi(ID_Resi),
-    CONSTRAINT ID_Kurir FOREIGN KEY (ID_Kurir) REFERENCES Data_Kurir(ID_Kurir)
+    CONSTRAINT ID_Kurir FOREIGN KEY (ID_Kurir) REFERENCES Pegawai(ID_Pegawai)
 );
 
 --  data pengguna
@@ -86,9 +94,9 @@ INSERT INTO data_pengguna VALUES ('AA002', 'Afiq Fawwaz', '0811124774', 'Rahayu 
 INSERT INTO data_kurir VALUES ('0X001', 'Satrio', '08125738863');
 
 -- jenis servis
-INSERT INTO jenis_servis VALUES ('S01','YES', '2', '25000');
-INSERT INTO jenis_servis VALUES ('S02','REG', '4', '15000');
-INSERT INTO jenis_servis VALUES ('S03','OKE', '8', '10000');
+INSERT INTO jenis_servis VALUES ('S01','YES', '25000');
+INSERT INTO jenis_servis VALUES ('S02','REG', '15000');
+INSERT INTO jenis_servis VALUES ('S03','OKE', '10000');
 
 -- kode pos
 INSERT INTO kode_pos VALUES ('60117', 'Gebang Putih', 'Sukolilo', 'Surabaya', 'Jawa Timur');
