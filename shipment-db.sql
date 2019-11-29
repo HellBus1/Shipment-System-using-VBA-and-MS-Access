@@ -10,6 +10,7 @@ CREATE TABLE Tipe_Akun (
     Security_Lvl        VARCHAR(8) NOT NULL
 );
 -- 
+---
 CREATE TABLE Pegawai (
     ID_Pegawai            CHAR(6) NOT NULL PRIMARY KEY,
     Nama_Pegawai          VARCHAR(32) NOT NULL,
